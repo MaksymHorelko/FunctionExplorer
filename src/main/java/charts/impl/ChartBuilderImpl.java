@@ -23,8 +23,8 @@ public class ChartBuilderImpl implements ChartBuilder {
 	}
 
 	@Override
-	public void addFunction(String name, AppFunction function, List<Double> xValues) {
-		XYSeries series = new XYSeries(name);
+	public void addFunction(List<Double> xValues, AppFunction function, String functionName) {
+		XYSeries series = new XYSeries(functionName);
 		for (double x : xValues) {
 			series.add(x, function.calculate(x));
 		}
@@ -32,14 +32,14 @@ public class ChartBuilderImpl implements ChartBuilder {
 	}
 
 	@Override
-	public void displayChart(String title, String xAxisLabel, String yAxisLabel) {
-		JFreeChart chart = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, dataset,
+	public void displayChart(String chartTitle, String xAxisLabel, String yAxisLabel) {
+		JFreeChart chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(800, 600));
 
-		JFrame frame = new JFrame(title);
+		JFrame frame = new JFrame(chartTitle);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(chartPanel);
 		frame.pack();

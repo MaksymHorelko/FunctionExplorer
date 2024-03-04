@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import function.AppFunction;
 
-public class SinTableFunction implements AppFunction {
+public class TableFunction implements AppFunction {
 	private ArrayList<Double> xValues;
-	private ArrayList<Double> sinValues;
+	private ArrayList<Double> yValues;
 
-	public SinTableFunction(ArrayList<Double> xValues, ArrayList<Double> sinValues) {
+	public TableFunction(ArrayList<Double> xValues, ArrayList<Double> sinValues) {
 		this.xValues = xValues;
-		this.sinValues = sinValues;
+		this.yValues = sinValues;
 	}
 
 	@Override
@@ -19,8 +19,8 @@ public class SinTableFunction implements AppFunction {
 
 		double x1 = xValues.get(index);
 		double x2 = xValues.get(index + 1);
-		double y1 = sinValues.get(index);
-		double y2 = sinValues.get(index + 1);
+		double y1 = yValues.get(index);
+		double y2 = yValues.get(index + 1);
 
 		return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1);
 	}

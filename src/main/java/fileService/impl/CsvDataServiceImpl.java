@@ -18,8 +18,7 @@ public class CsvDataServiceImpl implements CsvDataService {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				double[] point = parseLineToPoint(line);
-				dataSet.add(new DataPoint(point[0], point[1]));
+				dataSet.add(parseLineToPoint(line));
 			}
 		} catch (IOException | NumberFormatException e) {
 			e.printStackTrace();
@@ -35,8 +34,8 @@ public class CsvDataServiceImpl implements CsvDataService {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				double[] point = parseLineToPoint(line);
-				dataMap.put(point[0], point[1]);
+				DataPoint point = parseLineToPoint(line);
+				dataMap.put(point.getX(), point.getY());
 			}
 		} catch (IOException | NumberFormatException e) {
 			e.printStackTrace();
@@ -45,13 +44,11 @@ public class CsvDataServiceImpl implements CsvDataService {
 		return dataMap;
 	}
 
-	private double[] parseLineToPoint(String line) {
+	private DataPoint parseLineToPoint(String line) {
 		String[] parts = line.split(",");
-
 		double x = Double.parseDouble(parts[0]);
 		double y = Double.parseDouble(parts[1]);
-		return new double[] { x, y };
+		return new DataPoint(x, y);
 	}
-
 
 }
