@@ -16,14 +16,17 @@ import charts.ChartBuilder;
 import function.AppFunction;
 
 public class ChartBuilderImpl implements ChartBuilder {
-	private final XYSeriesCollection dataset;
-
-	public ChartBuilderImpl() {
-		this.dataset = new XYSeriesCollection();
-	}
+	private final XYSeriesCollection dataset = new XYSeriesCollection();
 
 	@Override
 	public void addFunction(List<Double> xValues, AppFunction function, String functionName) {
+		if (xValues == null || xValues.isEmpty())
+			throw new IllegalArgumentException("Ivalid input for xValues");
+		if (function == null)
+			throw new IllegalArgumentException("Invalid input for function");
+		if (functionName == null || functionName.isEmpty())
+			throw new IllegalArgumentException("Ivalid input for functionName");
+
 		XYSeries series = new XYSeries(functionName);
 		for (double x : xValues) {
 			series.add(x, function.calculate(x));
@@ -33,6 +36,13 @@ public class ChartBuilderImpl implements ChartBuilder {
 
 	@Override
 	public void displayChart(String chartTitle, String xAxisLabel, String yAxisLabel) {
+		if (chartTitle == null || chartTitle.isEmpty())
+			throw new IllegalArgumentException("Invalid input for chartTitle");
+		if (xAxisLabel == null || xAxisLabel.isEmpty())
+			throw new IllegalArgumentException("Invalid input for xAxisLabel");
+		if (yAxisLabel == null || yAxisLabel.isEmpty())
+			throw new IllegalArgumentException("Invalid input for yAxisLabel");
+
 		JFreeChart chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import exceptions.FileReaderException;
 import fileService.CsvDataService;
 import function.DataPoint;
 
@@ -20,8 +21,10 @@ public class CsvDataServiceImpl implements CsvDataService {
 			while ((line = reader.readLine()) != null) {
 				dataSet.add(parseLineToPoint(line));
 			}
-		} catch (IOException | NumberFormatException e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			throw new FileReaderException(e);
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException("Invalid number format in CSV file");
 		}
 
 		return dataSet;
@@ -37,8 +40,10 @@ public class CsvDataServiceImpl implements CsvDataService {
 				DataPoint point = parseLineToPoint(line);
 				dataMap.put(point.getX(), point.getY());
 			}
-		} catch (IOException | NumberFormatException e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			throw new FileReaderException(e);
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException("Invalid number format in CSV file");
 		}
 
 		return dataMap;

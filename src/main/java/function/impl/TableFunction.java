@@ -8,9 +8,13 @@ public class TableFunction implements AppFunction {
 	private ArrayList<Double> xValues;
 	private ArrayList<Double> yValues;
 
-	public TableFunction(ArrayList<Double> xValues, ArrayList<Double> sinValues) {
+	public TableFunction(ArrayList<Double> xValues, ArrayList<Double> yValues) {
+		if (xValues == null || xValues.isEmpty())
+			throw new IllegalArgumentException("Ivalid input for xValues");
+		if (yValues == null || yValues.isEmpty())
+			throw new IllegalArgumentException("Invalid input for yValue");
 		this.xValues = xValues;
-		this.yValues = sinValues;
+		this.yValues = yValues;
 	}
 
 	@Override

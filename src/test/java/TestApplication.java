@@ -30,8 +30,7 @@ public class TestApplication {
 
 	// utility
 	private ValuesGenerator valuesGenerator = new ValuesGeneratorImpl();
-	/*
-	 *
+
 	public void processFirstFunction() {
 		List<Double> yValues = appFunctionService.getYValues(xValues, firstFunction);
 		List<Double> differentiate = numericalDifferentiator.differentiate(xValues, firstFunction);
@@ -129,7 +128,6 @@ public class TestApplication {
 
 		System.out.println("All tests done");
 	}
-	 */
 	
 	
 	private static void processChoise(String choise) {
@@ -152,8 +150,8 @@ public class TestApplication {
 
 	public static void main(String[] args) {
 
-		FunctionExplorer application = new FunctionExplorer();
-		application.testAll();
+		FunctionExplorer functionExplorer = new FunctionExplorer();
+		testAll();
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Введіть що вам потрібно" + "ВСІ. Протестувати всі функції" + "1. Протестувати першу функцію"

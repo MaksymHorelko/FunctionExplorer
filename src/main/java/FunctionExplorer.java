@@ -21,7 +21,7 @@ public class FunctionExplorer {
 	private FileReader tableFileReader = new TableFileReader();
 	private CsvDataService csvDataService = new CsvDataServiceImpl();
 
-	// differentiator
+	// Differentiator
 	private Differentiable numericalDifferentiator = new NumericalDifferentiator();
 
 	public List<Double> differentiateAnalyticFunction(ArrayList<Double> xValues, AppFunction function) {
@@ -29,6 +29,9 @@ public class FunctionExplorer {
 	}
 
 	public List<Double> differentiateTableFunction(String filePath) {
+		if (filePath == null || filePath.isEmpty())
+			throw new IllegalArgumentException("Invalid input for filePath");
+
 		ArrayList<Double> xTableValues = new ArrayList<Double>();
 		ArrayList<Double> yValues = new ArrayList<Double>();
 
@@ -45,6 +48,10 @@ public class FunctionExplorer {
 	}
 
 	public List<Double> differentiateTableFunction(ArrayList<Double> xValues, ArrayList<Double> yValues) {
+		if (xValues == null || xValues.isEmpty())
+			throw new IllegalArgumentException("Invalid input for xValues");
+		if (yValues == null || yValues.isEmpty())
+			throw new IllegalArgumentException("Invalid input for yValues");
 
 		AppFunction tableFunction = new TableFunction(xValues, yValues);
 
@@ -52,14 +59,23 @@ public class FunctionExplorer {
 	}
 
 	public TreeSet<DataPoint> tableFunctionAsTreeSet(String csvFilePath) {
+		if (csvFilePath == null || csvFilePath.isEmpty())
+			throw new IllegalArgumentException("Invalid input for csvFilePath");
+
 		return csvDataService.readDataToTreeSet(csvFilePath);
 	}
 
 	public TreeMap<Double, Double> tableFunctionAsTreeMap(String csvFilePath) {
+		if (csvFilePath == null || csvFilePath.isEmpty())
+			throw new IllegalArgumentException("Invalid input for csvFilePath");
+
 		return csvDataService.readDataToTreeMap(csvFilePath);
 	}
 
 	public AppFunction analyticFunctionFromString(String expression) {
+		if (expression == null || expression.isEmpty())
+			throw new IllegalArgumentException("Invalid input for expression");
+
 		return new AnalyticFunction(expression);
 	}
 }
