@@ -5,7 +5,9 @@ import java.util.Scanner;
 
 import charts.ChartBuilder;
 import charts.impl.ChartBuilderImpl;
+import fileService.CsvDataService;
 import fileService.ResultSaver;
+import fileService.impl.CsvDataServiceImpl;
 import fileService.impl.FileResultSaver;
 import function.AppFunction;
 import function.DataPoint;
@@ -25,12 +27,14 @@ public class TestApplication {
 
 	// service
 	private AppFunctionService appFunctionService = new AppFunctionService();
+	private CsvDataService csvDataService = new CsvDataServiceImpl();
 	private ChartBuilder chartBuilder = new ChartBuilderImpl();
 	private ResultSaver fileResultSaver = new FileResultSaver();
 
 	// utility
 	private ValuesGenerator valuesGenerator = new ValuesGeneratorImpl();
 
+	/*
 	public void processFirstFunction() {
 		List<Double> yValues = appFunctionService.getYValues(xValues, firstFunction);
 		List<Double> differentiate = numericalDifferentiator.differentiate(xValues, firstFunction);
@@ -65,8 +69,7 @@ public class TestApplication {
 
 		fileResultSaver.saveResults(xTableValues, sinValues, differentiate, "output_third_fun");
 	}
-	
-	
+
 	public void testFirstFunction() {
 		try {
 			processFirstFunction();
@@ -96,8 +99,8 @@ public class TestApplication {
 
 		System.out.println("Thrid function processed");
 	}
-	
-		public void testCsvFile(String filePath) {
+
+	public void testCsvFile(String filePath) {
 		try {
 			processCsvFile(filePath);
 		} catch (Exception e) {
@@ -128,8 +131,7 @@ public class TestApplication {
 
 		System.out.println("All tests done");
 	}
-	
-	
+
 	private static void processChoise(String choise) {
 
 		if (choise.equals("1")) {
@@ -147,15 +149,16 @@ public class TestApplication {
 		}
 
 	}
-
+*/
 	public static void main(String[] args) {
 
 		FunctionExplorer functionExplorer = new FunctionExplorer();
-		testAll();
 
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Введіть що вам потрібно" + "ВСІ. Протестувати всі функції" + "1. Протестувати першу функцію"
-				+ "2. Протестувати другу функцію" + "3. Протестувати третю функцію" + "4. Протестувати CSV файл"
+		System.out.println("Введіть що вам потрібно:\n" + "ВСІ. Протестувати всі функції\n"
+				+ "1. Протестувати функцію f(x) = exp(-x^2) * sin(x)\n"
+				+ "2. Протестувати функцію f(x) = exp(-a * x^2) * sin(x)\n"
+				+ "3. Протестувати третю табличну функцію з файлу third_function\n" + "4. Протестувати CSV файл"
 				+ "5. Відобразити графік функцій"
 
 		);
@@ -163,7 +166,7 @@ public class TestApplication {
 		while (true) {
 			String choise = scanner.nextLine();
 
-			processChoise(choise);
+//			processChoise(choise);
 		}
 //		scanner.close();
 

@@ -13,10 +13,13 @@ import function.DataPoint;
 public class CsvDataServiceImpl implements CsvDataService {
 
 	@Override
-	public TreeSet<DataPoint> readDataToTreeSet(String filePath) {
+	public TreeSet<DataPoint> readDataToTreeSet(String csvFilePath) {
+		if (csvFilePath == null || csvFilePath.isEmpty())
+			throw new IllegalArgumentException("Invalid input for csvcsvFilePath");
+		
 		TreeSet<DataPoint> dataSet = new TreeSet<>();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				dataSet.add(parseLineToPoint(line));
@@ -31,10 +34,13 @@ public class CsvDataServiceImpl implements CsvDataService {
 	}
 
 	@Override
-	public TreeMap<Double, Double> readDataToTreeMap(String filePath) {
+	public TreeMap<Double, Double> readDataToTreeMap(String csvFilePath) {
+		if (csvFilePath == null || csvFilePath.isEmpty())
+			throw new IllegalArgumentException("Invalid input for csvcsvFilePath");
+		
 		TreeMap<Double, Double> dataMap = new TreeMap<Double, Double>();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				DataPoint point = parseLineToPoint(line);

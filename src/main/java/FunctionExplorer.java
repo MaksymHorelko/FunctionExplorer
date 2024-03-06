@@ -19,13 +19,18 @@ public class FunctionExplorer {
 
 	// file services
 	private FileReader tableFileReader = new TableFileReader();
-	private CsvDataService csvDataService = new CsvDataServiceImpl();
+	
 
 	// Differentiator
 	private Differentiable numericalDifferentiator = new NumericalDifferentiator();
 
 	public List<Double> differentiateAnalyticFunction(ArrayList<Double> xValues, AppFunction function) {
 		return numericalDifferentiator.differentiate(xValues, function);
+	}
+
+	public List<Double> differentiateAnalyticFunction(ArrayList<Double> xValues, String function) {
+
+		return numericalDifferentiator.differentiate(xValues, analyticFunctionFromString(function));
 	}
 
 	public List<Double> differentiateTableFunction(String filePath) {
@@ -58,19 +63,7 @@ public class FunctionExplorer {
 		return numericalDifferentiator.differentiate(xValues, tableFunction);
 	}
 
-	public TreeSet<DataPoint> tableFunctionAsTreeSet(String csvFilePath) {
-		if (csvFilePath == null || csvFilePath.isEmpty())
-			throw new IllegalArgumentException("Invalid input for csvFilePath");
-
-		return csvDataService.readDataToTreeSet(csvFilePath);
-	}
-
-	public TreeMap<Double, Double> tableFunctionAsTreeMap(String csvFilePath) {
-		if (csvFilePath == null || csvFilePath.isEmpty())
-			throw new IllegalArgumentException("Invalid input for csvFilePath");
-
-		return csvDataService.readDataToTreeMap(csvFilePath);
-	}
+	//
 
 	public AppFunction analyticFunctionFromString(String expression) {
 		if (expression == null || expression.isEmpty())
