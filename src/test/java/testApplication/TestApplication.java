@@ -30,20 +30,20 @@ public class TestApplication {
 		if (function.equals("1")) {
 			String firstFunctionOutput = "output_first_fun";
 			functionProcessor.processFirstFunction(firstFunctionOutput);
-			ioManager.displayMessage("Перша фунція оброблена. Результат збережеий в " + firstFunctionOutput + "\n");
+			ioManager.displayMessage("Перша фунція оброблена. Результат збережений в " + firstFunctionOutput + "\n");
 		}
 
 		else if (function.equals("2")) {
 			String secondFunctionOutput = "output_second_fun_";
 			functionProcessor.processSecondFunction(secondFunctionOutput);
-			ioManager.displayMessage("Друга фунція оброблена. Результат збережеий в " + secondFunctionOutput + "\n");
+			ioManager.displayMessage("Друга фунція оброблена. Результат збережений в " + secondFunctionOutput + "\n");
 		}
 
 		else if (function.equals("3")) {
 			String thirdFunctionOutput = "output_third_fun";
 			String filePath = "third_function";
 			functionProcessor.processThirdFunction(filePath, thirdFunctionOutput);
-			ioManager.displayMessage("Третя фунція оброблена. Результат збережеий в " + thirdFunctionOutput + "\n");
+			ioManager.displayMessage("Третя фунція оброблена. Результат збережений в " + thirdFunctionOutput + "\n");
 		}
 
 		else {
