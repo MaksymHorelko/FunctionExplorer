@@ -1,14 +1,10 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import differentiation.Differentiable;
 import differentiation.impl.NumericalDifferentiator;
-import fileService.CsvDataService;
 import fileService.FileReader;
-import fileService.impl.CsvDataServiceImpl;
 import fileService.impl.TableFileReader;
 import function.AppFunction;
 import function.DataPoint;
@@ -17,11 +13,7 @@ import function.impl.TableFunction;
 
 public class FunctionExplorer {
 
-	// file services
 	private FileReader tableFileReader = new TableFileReader();
-	
-
-	// Differentiator
 	private Differentiable numericalDifferentiator = new NumericalDifferentiator();
 
 	public List<Double> differentiateAnalyticFunction(ArrayList<Double> xValues, AppFunction function) {
@@ -63,9 +55,7 @@ public class FunctionExplorer {
 		return numericalDifferentiator.differentiate(xValues, tableFunction);
 	}
 
-	//
-
-	public AppFunction analyticFunctionFromString(String expression) {
+	private AppFunction analyticFunctionFromString(String expression) {
 		if (expression == null || expression.isEmpty())
 			throw new IllegalArgumentException("Invalid input for expression");
 

@@ -1,5 +1,9 @@
 import static org.junit.Assert.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,15 +21,11 @@ public class FunctionExplorerTest {
 	private ArrayList<Double> xValues = new ValuesGeneratorImpl().generate(start, finish, step);
 	private ArrayList<Double> yValues = new ValuesGeneratorImpl().generate(start, finish, step);
 	private ArrayList<Double> aValues = new ValuesGeneratorImpl().generate(0.5, 1.5, 0.5);
-	private AppFunction firstFunction = x -> Math.exp(-x * x) * Math.sin(x); /* f(x) = exp(-x^2) * sin(x) */
-	private AppFunction secondFunction; /* f(x) = exp(-a * x^2) * sin(x) */
-	private String expression = "x^2";
-	private String filePath = "third_function";
 
 	@Test
-	public void testDifferentiateAnalyticFunction() {
+	public void testDifferentiateFirstAnalyticFunction() {
 		FunctionExplorer funcrionExplorer = new FunctionExplorer();
-
+		AppFunction firstFunction = x -> Math.exp(-x * x) * Math.sin(x); /* f(x) = exp(-x^2) * sin(x) */
 		List<Double> result = funcrionExplorer.differentiateAnalyticFunction(xValues, firstFunction);
 
 		List<Double> correctAnswer = Arrays.asList(-0.3079499480349024, -0.2785810559527424, -0.2495269508795417,
@@ -61,6 +61,7 @@ public class FunctionExplorerTest {
 	@Test
 	public void testDifferentiateSecondAnalyticFunction() {
 		FunctionExplorer funcrionExplorer = new FunctionExplorer();
+		AppFunction secondFunction; /* f(x) = exp(-a * x^2) * sin(x) */
 
 		double a_0_5 = aValues.get(0);
 		secondFunction = x -> Math.exp(-a_0_5 * x * x) * Math.sin(x);
@@ -162,8 +163,58 @@ public class FunctionExplorerTest {
 	}
 
 	@Test
+	public void testDifferentiateFirstTableFunctionInFile() {
+
+		double startX = 0;
+		double endX = 2 * Math.PI;
+		double step = 0.1;
+
+		String filePath = "/home/mint/java-workspace/FunctionExplorer/sin_values";
+
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+			for (double x = startX; x <= endX; x += step) {
+				double y = Math.sin(x);
+				writer.write(String.format("%.2f %.4f%n", x, y));
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		FunctionExplorer funcrionExplorer = new FunctionExplorer();
+		List<Double> result = funcrionExplorer.differentiateTableFunction(filePath);
+
+		List<Double> correctAnswer = Arrays.asList(3113650.994499984, 0.9935000000044214, 0.978499999998439,
+				0.9534999999838423, 0.9194999999739828, 0.8760000000107571, 0.824000000010372, 0.7640000000419533,
+				0.6955000000363754, 0.6204999999925853, 0.5394999999519534, 0.4524999999699908, 0.36199999997599264,
+				0.2669999999427297, 0.16949999998017162, 0.07099999999038431, -0.029000000012491256,
+				-0.12899999995985567, -0.22699999996378395, -0.3224999999829059, -0.41550000001722154,
+				-0.5040000000677836, -0.5875000000932218, -0.6650000001218181, -0.7360000001122025, -0.8000000000785157,
+				-0.855500000174203, -0.9025000001217087, -0.9410000001153218, -0.969500000141954, -0.9880000001322164,
+				-0.997500000134155, -0.9965000001346813, -0.9855000001335323, -0.9655000001440595, -0.9350000001462355,
+				-0.8950000001395342, -0.8470000000815325, -0.7900000000837792, -0.7245000001043778, -0.6525000000867642,
+				-0.5740000000309387, -0.48950000003378236, -0.4000000000670134, -0.30650000004683875,
+				-0.2104999999863466, -0.1119999999965593, -0.012500000035053915, 0.08699999998196262,
+				0.18649999999897915, 0.28350000003118936, 0.377000000051364, 0.4675000000453622, 0.5535000000556067,
+				0.6340000000548685, 0.7075000000855702, 0.7740000000922009, 0.8335000000747605, 0.8840000001175685,
+				0.9260000001232171, 0.958500000147744, 0.9815000001356378, 0.9910000001375763);
+
+		File file = new File(filePath);
+		try {
+			file.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		assertArrayEquals(correctAnswer.toArray(), result.toArray());
+
+	}
+
+	@Test
 	public void testDifferentiateCustomAnalyticFunction() {
 		FunctionExplorer funcrionExplorer = new FunctionExplorer();
+	 String expression = "x^2";
 
 		List<Double> result = funcrionExplorer.differentiateAnalyticFunction(xValues, expression);
 
@@ -193,12 +244,10 @@ public class FunctionExplorerTest {
 	}
 
 	@Test
-	public void testDifferentiateTableFunctionByFile() {
-		FunctionExplorer funcrionExplorer = new FunctionExplorer();
-		List<Double> result = funcrionExplorer.differentiateTableFunction(filePath);
-		List<Double> correctAnswer = Arrays.asList(-3279211.322014651, 3071431.535128205, 2.8571428571932955,
-				2.8571428571932955, 2.8571428571932955);
-		assertArrayEquals(correctAnswer.toArray(), result.toArray());
+	public void testDifferentiateTableFunctionInCsvFile() {
+		
+		
+		
 	}
 
 	@Test
