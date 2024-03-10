@@ -50,7 +50,7 @@ public class ChartBuilderImpl implements ChartBuilder {
 		chartPanel.setPreferredSize(new Dimension(800, 600));
 
 		JFrame frame = new JFrame(chartTitle);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(chartPanel);
 		frame.pack();
 		frame.setVisible(true);

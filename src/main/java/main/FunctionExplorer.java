@@ -1,3 +1,4 @@
+package main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class FunctionExplorer {
 		return numericalDifferentiator.differentiate(xValues, tableFunction);
 	}
 
-	private AppFunction analyticFunctionFromString(String expression) {
+	public AppFunction analyticFunctionFromString(String expression) {
 		if (expression == null || expression.isEmpty())
 			throw new IllegalArgumentException("Invalid input for expression");
 
