@@ -19,22 +19,20 @@ public class TableFunction implements AppFunction {
 
 	@Override
 	public double calculate(double x) {
-		int index = findIntervalIndex(x);
-
-		double x1 = xValues.get(index);
-		double x2 = xValues.get(index + 1);
-		double y1 = yValues.get(index);
-		double y2 = yValues.get(index + 1);
-
-		return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1);
-	}
-
-	private int findIntervalIndex(double x) {
-		for (int i = 0; i < xValues.size() - 1; i++) {
-			if (x >= xValues.get(i) && x <= xValues.get(i + 1)) {
-				return i;
+		double res = 0.0;
+		int numData = xValues.size();
+		double numer, denom;
+		for (int k = 0; k < numData; k++) {
+			numer = 1.0;
+			denom = 1.0;
+			for (int j = 0; j < numData; j++) {
+				if (j != k) {
+					numer = numer * (x - xValues.get(j));
+					denom = denom * (xValues.get(k) - xValues.get(j));
+				}
 			}
+			res = res + yValues.get(k) * numer / denom;
 		}
-		return xValues.size() - 2;
+		return res;
 	}
 }

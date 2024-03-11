@@ -88,7 +88,7 @@ public class TestApplication {
 		if (operaion.equals("1")) {
 			String customFunctionOutput = "output_custom_fun";
 			functionProcessor.processCustomUserFunction(function, customFunctionOutput);
-			ioManager.displayMessage("Ваша фунція оброблена. Результат збережеий в" + customFunctionOutput + "\n");
+			ioManager.displayMessage("Ваша фунція оброблена. Результат збережеий в " + customFunctionOutput + "\n");
 		}
 
 		else if (operaion.equals("2")) {
