@@ -33,7 +33,7 @@ public class FunctionExplorer {
 		ArrayList<Double> xTableValues = new ArrayList<Double>();
 		ArrayList<Double> yValues = new ArrayList<Double>();
 
-		ArrayList<DataPoint> coordinates = tableFileReader.read(filePath);
+		List<DataPoint> coordinates = tableFileReader.read(filePath);
 
 		for (DataPoint point : coordinates) {
 			xTableValues.add(point.getX());

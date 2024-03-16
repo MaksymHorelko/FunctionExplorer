@@ -2,6 +2,7 @@ package fileService.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import exceptions.FileReaderException;
@@ -11,9 +12,9 @@ import function.DataPoint;
 public class TableFileReader implements FileReader {
 
 	@Override
-	public ArrayList<DataPoint> read(String filePath) {
+	public List<DataPoint> read(String filePath) {
 
-		ArrayList<DataPoint> coordinates = new ArrayList<>();
+		List<DataPoint> coordinates = new ArrayList<>();
 
 		try (Scanner scanner = new Scanner(new File(filePath))) {
 			while (scanner.hasNextDouble()) {

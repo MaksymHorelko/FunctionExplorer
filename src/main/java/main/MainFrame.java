@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,7 +23,11 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import differentiation.impl.NumericalDifferentiator;
+import fileService.CsvDataService;
+import fileService.impl.CsvDataServiceImpl;
+import fileService.impl.TableFileReader;
 import function.AppFunction;
+import function.DataPoint;
 import function.impl.AppFunctionService;
 import generator.impl.ValuesGeneratorImpl;
 
@@ -162,19 +167,26 @@ public class MainFrame extends JFrame {
 			switch (comboBoxInputMode.getSelectedIndex()) {
 			case 0:
 				try {
-					if (isfieldIsEmpty(textFieldStart) || isfieldIsEmpty(textFieldStop)
-							|| isfieldIsEmpty(textFieldStep)) {
-						JOptionPane.showMessageDialog(null, "Невірно вказані значення  аргументу", "Помилка!",
-								JOptionPane.ERROR_MESSAGE);
-						break;
-					} else {
+					if (!(isfieldIsEmpty(textFieldStart) || isfieldIsEmpty(textFieldStop)
+							|| isfieldIsEmpty(textFieldStep))) {
 						start = Double.parseDouble(textFieldStart.getText());
 						stop = Double.parseDouble(textFieldStop.getText());
 						step = Double.parseDouble(textFieldStep.getText());
+						if (!isValidFunctionBounds()) {
+							JOptionPane.showMessageDialog(null, "Невірно вказані значення  аргументу", "Помилка!",
+									JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Невірно вказані значення  аргументу", "Помилка!",
+								JOptionPane.ERROR_MESSAGE);
+						break;
 					}
 
 					String function = textFieldFunction.getText();
 					chart = createChart(new FunctionExplorer().analyticFunctionFromString(function));
+
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -195,7 +207,12 @@ public class MainFrame extends JFrame {
 			case 2:
 
 				String filePath = textFieldFilePath.getText();
-				chart = createChart(filePath);
+				if (doesFileExist(filePath)) {
+					chart = createChart(filePath);
+				} else {
+					JOptionPane.showMessageDialog(null, "Файл не знайдений", "Помилка!", JOptionPane.ERROR_MESSAGE);
+				}
+
 				break;
 
 			default:
@@ -282,14 +299,23 @@ public class MainFrame extends JFrame {
 		return false;
 	}
 
-	private JFreeChart createEmptyChart() {
-		return ChartFactory.createXYLineChart("", "X", "Y", new XYSeriesCollection(), PlotOrientation.VERTICAL,
-				rootPaneCheckingEnabled, rootPaneCheckingEnabled, rootPaneCheckingEnabled);
+	private boolean isValidFunctionBounds() {
+		return stop > start ? stop > step : false;
+	}
+
+	private boolean doesFileExist(String filePath) {
+		File file = new File(filePath);
+		return file.exists() && !file.isDirectory();
 	}
 
 	private JFreeChart createChart(XYSeriesCollection dataSet) {
 		return ChartFactory.createXYLineChart("", "X", "Y", dataSet, PlotOrientation.VERTICAL, rootPaneCheckingEnabled,
 				rootPaneCheckingEnabled, rootPaneCheckingEnabled);
+	}
+
+	private JFreeChart createEmptyChart() {
+		return ChartFactory.createXYLineChart("", "X", "Y", new XYSeriesCollection(), PlotOrientation.VERTICAL,
+				rootPaneCheckingEnabled, rootPaneCheckingEnabled, rootPaneCheckingEnabled);
 	}
 
 	private JFreeChart createChart(AppFunction appFunction) {
@@ -313,13 +339,36 @@ public class MainFrame extends JFrame {
 
 	private JFreeChart createChart(String filePath) {
 		try {
-			new File(filePath);
-			return null;
+			if (filePath.contains(".csv")) {
+				CsvDataService csvService = new CsvDataServiceImpl();
+				TreeSet<DataPoint> set = csvService.readDataToTreeSet(filePath);
+				ArrayList<Double> xValues = new ArrayList<>();
+				ArrayList<Double> yValues = new ArrayList<>();
+				for (DataPoint point : set) {
+					xValues.add(point.getX());
+					yValues.add(point.getY());
+				}
+				return createChart(xValues, yValues);
+			}
+
+			else {
+				TableFileReader fileReader = new TableFileReader();
+
+				List<DataPoint> points = fileReader.read(filePath);
+				ArrayList<Double> xValues = new ArrayList<>();
+				ArrayList<Double> yValues = new ArrayList<>();
+				for (DataPoint point : points) {
+					xValues.add(point.getX());
+					yValues.add(point.getY());
+				}
+				return createChart(xValues, yValues);
+			}
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
-		return null;
+		return createEmptyChart();
 	}
 
 	private JFreeChart createChart(ArrayList<Double> x, ArrayList<Double> y) {

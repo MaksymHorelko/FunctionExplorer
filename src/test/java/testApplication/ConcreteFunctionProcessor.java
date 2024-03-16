@@ -55,7 +55,7 @@ public class ConcreteFunctionProcessor {
 		ArrayList<Double> xTableValues = new ArrayList<>();
 		ArrayList<Double> sinValues = new ArrayList<>();
 
-		ArrayList<DataPoint> coordinates = tableFileReader.read(filePath);
+		List<DataPoint> coordinates = tableFileReader.read(filePath);
 
 		for (DataPoint point : coordinates) {
 			xTableValues.add(point.getX());
